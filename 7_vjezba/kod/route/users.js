@@ -41,12 +41,8 @@ router.post('/login', validationMiddleware.body({
 async ctx => {
 	const user = await usersRepo.getUserByEmail(ctx.request.body.email)
 	console.log("USER:",user);
-	if (!user) {
-		ctx.body = {
-			status: 401,
-			message: 'Error'
-		}
-		return 
+	if (!user) { 
+		throw new Error("User error")
 	}
 
 	const isPassNotGood = await usersRepo.checkPassword(
@@ -55,11 +51,7 @@ async ctx => {
 	)
 
 	if (!isPassNotGood) {
-		ctx.body = {
-			status: 401,
-			message: 'Error 2'
-		}
-		return 
+		throw new Error("Password error")
 	}
 	console.log("user: ",user);
 
@@ -77,9 +69,8 @@ router.post('/register', validationMiddleware.body({
 	console.log("password: ",password);
 	const existingUser = await usersRepo.getUserByEmail(email);
 	if (existingUser) {
-	  ctx.status = 400;
-	  ctx.body = { message: 'User already exists!!' };
-	  return;
+	  console.log("User exists")
+	  throw new Error("User already exists!!")
 	}
 	
 	const hashedPassword = await usersRepo.hashPassword(password)

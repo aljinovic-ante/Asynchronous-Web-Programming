@@ -18,9 +18,7 @@ router.post(
 
     const existingLock = await resourceLocksRepo.getLock(resource_type, resource_id);
     if (existingLock) {
-      ctx.status = 409;
-      ctx.body = { message: 'Resource vec lockan' };
-      return;
+      throw new Error("Resource vec lockan")
     }
 
     await resourceLocksRepo.createLock({ resource_type, resource_id, user_id: userId });
@@ -40,9 +38,7 @@ router.delete(
 
     const deletedCount = await resourceLocksRepo.deleteLockByUser(resourceId, userId);
     if (deletedCount === 0) {
-      ctx.status = 403;
-      ctx.body = { message: 'Error no rights' };
-      return;
+      throw new Error("Error no rights")
     }
 
     ctx.status = 204;

@@ -8,15 +8,33 @@ app.use(bodyParser())
 
 app.use(async (ctx, next) => {
   try {
-    await next()
+    await next();
   } catch (err) {
-    console.error(err)
-    ctx.body = {
-      err,
-      message: err.message
+    if (err.message === "Author not found") {
+      ctx.status = 404;
+      ctx.body = { error: err.message };
+    }
+    else if (err.message === "Song not found") {
+      ctx.status = 404;
+      ctx.body = { error: err.message };
+    }
+    else if (err.message === "User already exists!!") {
+      ctx.status = 400;
+      ctx.body = { message: err.message };
+    } 
+    else if (err.message === "Resource vec lockan") {
+      ctx.status = 409;
+      ctx.body = { message: err.message };
+    }
+    else if (err.message === "Error no rights") {
+      ctx.status = 403;
+      ctx.body = { message: err.message };
+    } else {
+      ctx.status = 400;
+      ctx.body = { error: err.message };
     }
   }
-})
+});
 
 app.use(require('./route/index').routes())
 app.use(require('./route/authors').routes());

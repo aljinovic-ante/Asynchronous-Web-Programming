@@ -71,7 +71,7 @@ describe('User routes', function () {
 		it('should register a new user', async function () {
 		  const resp = await global.api.post('/register')
 			.send({
-			  email: 'testuser1',
+			  email: 'testuser123',
 			  password: 'password123',
 			});
 	  

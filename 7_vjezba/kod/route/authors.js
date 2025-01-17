@@ -27,9 +27,7 @@ router.get('/authors/:authorId',
   ,async ctx => {
     const author = await authorRepo.getAuthorById(ctx.params.authorId);
     if (!author) {
-      ctx.status = 404;
-      ctx.body = { message: 'Author not found' };
-      return;
+      throw new Error("Author not found")
     }
     ctx.body = author;
   }
@@ -54,9 +52,7 @@ router.delete('/authors/:authorId',
   async (ctx) => {
     const author = await authorRepo.getAuthorById(ctx.params.authorId);
     if (!author) {
-      ctx.status = 404;
-      ctx.body = { message: 'Author not found' };
-      return;
+      throw new Error("Author not found")
     }
     await authorRepo.deleteAuthor(ctx.params.authorId);
     ctx.status = 204;

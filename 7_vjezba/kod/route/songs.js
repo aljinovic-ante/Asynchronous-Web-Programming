@@ -27,9 +27,7 @@ router.get('/songs/:songId',
   async ctx => {
     const song = await songRepo.getSongById(ctx.params.songId);
     if (!song) {
-      ctx.status = 404;
-      ctx.body = { message: 'Song not found' };
-      return;
+      throw new Error("Song not found")
     }
     ctx.body = song;
   }
@@ -50,8 +48,13 @@ router.put('/songs/:songId',
 router.delete('/songs/:songId',
   validationMiddleware.params({
     songId: Joi.number().integer().required(),
-  }),jwtCheck,
+  }),
+  jwtCheck,
   async ctx => {
+    const song = await songRepo.getSongById(ctx.params.songId);
+    if (!song) {
+      throw new Error("Song not found");
+    }
     await songRepo.deleteSong(ctx.params.songId);
     ctx.status = 204;
   }
