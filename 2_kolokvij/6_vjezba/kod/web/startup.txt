@@ -1,0 +1,2 @@
+C:\Faks\AWP\awp\Asynchronous-Web-Programming-1\2_kolokvij\6_vjezba\kod> node .\index.js
+C:\Faks\AWP\awp\Asynchronous-Web-Programming-1\2_kolokvij\6_vjezba\kod\web> node web.js
